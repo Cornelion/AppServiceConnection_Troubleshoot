@@ -4,7 +4,9 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
-  IgnorableNamespaces="uap rescap">
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:uap4="http://schemas.microsoft.com/appx/manifest/uap/windows10/4"
+  IgnorableNamespaces="uap uap4 rescap desktop">
 
   <Identity
     Name="f39c8af1-67bc-4307-91c8-bc829c005aa1"
@@ -27,19 +29,46 @@
   </Resources>
 
   <Applications>
+	  <!--Please make sure that 'Package_Launcher' is set as the package's entrypoint.-->
     <Application Id="App"
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Package"
-        Description="Package"
+        DisplayName="App Connection Test"
+        Description="Entry point"
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
         <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
+		<Extensions>
+			<uap:Extension Category="windows.protocol" Executable="UWP_UI.exe" EntryPoint="UWP_UI.App" >
+				<uap:Protocol Name="troubleshootappserviceconnection" />
+			</uap:Extension>
+			<desktop:Extension Category="windows.fullTrustProcess" Executable="FullTrustExtension\FullTrustExtension.exe">
+			</desktop:Extension>
+		</Extensions>
     </Application>
+	  
+<!--This is the project that should be launched by protocol activation.
+It should then establish a connection with the fulltrust .net framework project-->
+	  <Application Id="App2" Executable="UWP_UI.exe" EntryPoint="UWP_UI.App" >
+		  <uap:VisualElements AppListEntry="none" DisplayName="UWP UI" Description="UWP UI" BackgroundColor="white"  Square44x44Logo="Images\Square44x44Logo.png" Square150x150Logo="Images\Square150x150Logo.png">
+			  <uap:DefaultTile  Square71x71Logo="Images\SmallTile.png" Wide310x150Logo="Images\Wide310x150Logo.png" Square310x310Logo="Images\LargeTile.png"/>
+			  <uap:SplashScreen BackgroundColor="white"  Image="Images\SplashScreen.png" />
+		  </uap:VisualElements>
+		  <Extensions>
+
+			  <uap:Extension Category="windows.appService" >
+				  <uap:AppService Name="AppConnection"  uap4:SupportsMultipleInstances="false"/>
+			  </uap:Extension>
+
+		  </Extensions>
+	  </Application>
+
+	  
+	  
   </Applications>
 
   <Capabilities>
