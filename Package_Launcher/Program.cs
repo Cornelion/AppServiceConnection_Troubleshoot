@@ -29,8 +29,14 @@ namespace Package_Launcher
                await Windows.System.Launcher.LaunchUriAsync(new Uri(@"troubleshootappserviceconnection:"))
                   );
             t.Wait();
-           
-        }
+            //If Visual studio complains about Launcher existing in two assemblies,
+            //remove the 'windows' reference of 
+            //C:\Program Files (x86)\Windows Kits\10\UnionMetadata\10.0.17763.0\Facade\windows.winmd
+            //and put it again
+
+            //Other required references are listed in the git readme file
+        
+    }
         static void DoSomethingElse(string arg)
         {
 
